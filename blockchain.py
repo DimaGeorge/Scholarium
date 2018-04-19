@@ -19,21 +19,13 @@ def createChain():
     output = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
     return Response(output)
 
-@blockchain.route(settings.version + '/blockchain' , methods = ['GET'])
-def startChain():
-    parameter = request.get_json()
-    command = [settings.pathToMultichain + "/multichaind", "-daemon", settings.chainName] 
-    settings.nodePid = subprocess.Popen(command).pid
-    return Response("Node running.\n")
-
 @blockchain.route(settings.version + '/blockchain' , methods = ['DELETE'])
 def destroyChain():
     if settings.nodePid == 0:
-        return Response("pid 0")
-    else:
-        command = ["kill", "-9", str(settings.nodePid)]
+        command = ["rm", "-r" , settings.pathToHiddenMultichain + "/" + settings.chainName] 
         subprocess.call(command)
+        return Response("Chain deleted.\n")
+    else:
+        return Response("Stop the connection before deleting the chain!\n")
     
-    command = ["rm", "-r" , settings.pathToHiddenMultichain + "/" + settings.chainName] 
-    subprocess.call(command)
-    return Response("Node killed and chain deleted.\n")
+    
