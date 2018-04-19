@@ -1,9 +1,12 @@
 post /blockchain
-curl -X POST "http://127.0.0.1:5000/v1.1/blockchain" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"chainName\": \"unichain\", \"params\": [ \"-anyone-can-connect=true\" ]}"
+curl -X POST "http://127.0.0.1:5000/v1.1/blockchain" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"chainName\": \"unichain\", \"params\": []}"
 
 delete /blockchain
 curl -X DELETE "http://127.0.0.1:5000/v1.1/blockchain" -H "accept: application/json"
 
 put /blockchain/connection
 curl -X PUT "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: application/json"
+
+get /blockchain/connection
+curl -X GET "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: application/json"
 
