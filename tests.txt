@@ -10,3 +10,5 @@ curl -X PUT "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: appli
 get /blockchain/connection
 curl -X GET "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: application/json"
 
+post /blockchain/connection
+curl -X POST "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: application/json" -H "Content-Type: application/json" -d "\"unichain@192.168.1.9:5759\""

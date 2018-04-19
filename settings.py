@@ -17,6 +17,7 @@ rpcpasswd = 'gg'
 rpchost = 'localhost'
 rpcport = '5001'
 chainName = 'unichain'
+nodeAddress = chainName
 
 defaultBlockchainParamsList = [
     '-anyone-can-connect=true',
@@ -34,3 +35,9 @@ def initMultichainNode():
     global multichainNode
     multichainNode = Savoir(rpcuser, rpcpasswd, rpchost, rpcport, chainName)
     print "Multichain node initiated!"
+
+def updateChainName(param):
+    global chainName
+    global nodeAddress
+    chainName = param
+    nodeAddress = param

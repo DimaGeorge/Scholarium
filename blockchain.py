@@ -8,7 +8,7 @@ blockchain = Blueprint('blockchain', __name__)
 @blockchain.route(settings.version + '/blockchain' , methods = ['POST'])
 def createChain():
     parameter = request.get_json()
-    settings.chainName = parameter['chainName']
+    settings.updateChainName(parameter['chainName'])
     # to verify if some of the params received are in the default params
     command = (
         [settings.pathToMultichain + "/multichain-util"]
