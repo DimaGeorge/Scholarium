@@ -1,8 +1,10 @@
 from flask import Flask
-from sch_api import api
+from blockchain import blockchain
+import settings
 
 app = Flask(__name__)
-app.register_blueprint(api)
+app.register_blueprint(blockchain)
+
 
 
 if __name__ == '__main__':

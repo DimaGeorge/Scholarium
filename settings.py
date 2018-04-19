@@ -1,7 +1,28 @@
-url = "http://gg:gg@localhost:4786"
+from Savoir import Savoir
 
-headers = {'content-type': 'application/json', 
-    'Access-Control-Allow-Origin': '*'
-    }
+global chainName
+global defaultBlockchainParamsList
+global rpcuser
+global rpcpasswd
+global rpchost
+global rpcport
+global chainName
+global pathToMultichain
+global version
+global multichainNode
+global nodePid
 
-chainName = "chain1"
+defaultBlockchainParamsList = [
+    '-anyone-can-connect=true'
+]
+
+rpcuser = 'gg'
+rpcpasswd = 'gg'
+rpchost = 'localhost'
+rpcport = '4786'
+chainName = 'defaultName'
+pathToMultichain = '/home/dimi/multichain/src'
+pathToHiddenMultichain = '/home/dimi/.multichain'
+version = '/v1.1'
+multichainNode = Savoir(rpcuser, rpcpasswd, rpchost, rpcport, chainName)
+nodePid = 0
