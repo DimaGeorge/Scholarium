@@ -12,3 +12,11 @@ curl -X GET "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: appli
 
 post /blockchain/connection
 curl -X POST "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: application/json" -H "Content-Type: application/json" -d "\"unichain@192.168.1.9:5759\""
+
+**
+get /offchain/subscription
+curl -X GET "http://127.0.0.1:5000/v1.1/offchain/subscription" -H "accept: application/json"
+
+**
+post /offchain/subscription
+curl -X POST "http://127.0.0.1:5000/v1.1/offchain/subscription" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"ip\": \"123.123.123.123\", \"port\": \"5000\", \"pubKey\": \"0pppppppppppppppppppppppppppppppppppp\", \"actor\": { \"identityInfo\": \"Romanian Ministry of Education / Military Technical Academy / Liviu Pop\", \"address\": \"1zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\", \"pubKey\": \"0pppppppppppppppppppppppppppppppppppp\" }, \"reason\": \"I was your student for 3 years!\"}"
