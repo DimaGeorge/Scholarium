@@ -3,6 +3,7 @@ from flask import Blueprint, request
 import settings
 import subprocess
 from Savoir import Savoir
+import time
 
 connection = Blueprint('connection', __name__)
 
@@ -23,29 +24,12 @@ def startChain():
         command = [settings.pathToMultichain + "/multichaind", "-daemon", settings.nodeAddress] 
         proc = subprocess.Popen(command)
         settings.nodePid = proc.pid
+        time.sleep(2)
         if settings.nodePid == 0:
             return Response("Something went wrong when trying to start the chain!")
         else:
-            readConfFile()
             settings.initMultichainNode()
             return Response("Node running.\n")
     else:
-        command = ["kill", "-9", str(settings.nodePid)]
-        subprocess.call(command)
-        command = ["fuser", settings.rpcport + "/tcp", "-k"]
-        subprocess.call(command)
-        settings.nodePid = 0
-        return Response("Node stopped.\n")
+        return Response(settings.killNode())
 
-
-def readConfFile():
-    # reading rpcuser and rpcpassword
-    confFilePath = (settings.pathToHiddenMultichain 
-        + "/" + settings.chainName + "/multichain.conf"
-        )
-    confFile = open(confFilePath, 'r')
-    confFileContent = confFile.read()
-    rows = confFileContent.split("\n")
-    settings.rpcuser = rows[0].split("=")[1]
-    settings.rpcpasswd = rows[1].split("=")[1]
-    print "GOT " + settings.rpcuser + "-" + settings.rpcpasswd

@@ -6,7 +6,7 @@ from function import function
 from flask_cors import CORS
 from flask import Flask, render_template, request, url_for, jsonify
 from flask import Blueprint, request
-
+import settings
 
 acceptActor = Blueprint('acceptActor', __name__)
 
@@ -54,7 +54,7 @@ def createMultisignatureAddress(claimerPubKey):
         return multisigAddress
 
 
-@acceptActor.route(setings.entityName +'/acceptActor', methods = ['POST'])
+@acceptActor.route(settings.version +'/acceptActor', methods = ['POST'])
 def addClaimer():
     subscriptionForm = request.get_json(force=True)
 
