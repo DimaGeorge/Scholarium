@@ -3,6 +3,7 @@ from blockchain import blockchain
 from connection import connection
 from subscription import subscription
 from actor import actor
+from certificate import certificate
 import settings
 
 
@@ -12,7 +13,7 @@ app.register_blueprint(blockchain)
 app.register_blueprint(connection)
 app.register_blueprint(subscription)
 app.register_blueprint(actor)
-
+app.register_blueprint(certificate)
 
 
 if __name__ == '__main__':

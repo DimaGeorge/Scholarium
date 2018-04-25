@@ -26,7 +26,7 @@ def addActor():
     permissionsList = validateActorData(subscriptionForm)
 
     if permissionsList:
-        if permissionsList != 1
+        if permissionsList != 1:
             multisigAddress = settings.multichainNode.addmultisigaddress(2,[settings.myPubKey,subscriptionForm['pubKey']])
             settings.multichainNode.importaddress(multisigAddress,'false')
             settings.multichainNode.grantfrom(settings.myAddress,multisigAddress,'send,receive')

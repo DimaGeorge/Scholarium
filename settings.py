@@ -2,7 +2,7 @@ from Savoir import Savoir
 from os.path  import expanduser
 import signal
 import subprocess
-
+import json
 
 global chainName
 global defaultBlockchainParamsList
@@ -15,6 +15,8 @@ global pathToMultichain
 global version
 global multichainNode
 global nodePid
+global diplomaName
+global actors
 
 rpcuser = 'default'
 rpcpasswd = 'default'
@@ -25,6 +27,8 @@ nodeAddress = 'unichain'
 version = '/v1.1'
 myAddress = 'none'
 myPubKey = 'none'
+diplomaName = 'defaultDiploma'
+actors = {}
 
 defaultBlockchainParamsList = [
     '-anyone-can-connect=true',
@@ -66,6 +70,7 @@ def initMultichainNode():
     global chainName
     global rpcuser
     global rpcpasswd
+    global actors
 
     confFilePath = (pathToHiddenMultichain + "/" + chainName + "/multichain.conf")
     confFile = open(confFilePath, 'r')
@@ -84,6 +89,9 @@ def initMultichainNode():
             myAddress = item['address']
 
     myPubKey = multichainNode.validateaddress(myAddress)['pubkey']
+
+    with open('./res/actors', 'r') as fin:
+        actors = json.load(fin)
 
 def updateChainName(param):
     global chainName
