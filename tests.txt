@@ -11,17 +11,13 @@ get /blockchain/connection
 curl -X GET "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: application/json"
 
 post /blockchain/connection
-curl -X POST "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: application/json" -H "Content-Type: application/json" -d "\"unichain@192.168.1.10:6825\""
-
-**
-get /offchain/subscription
-curl -X POST "http://127.0.0.1:5000/v1.1/offchain/subscription" -H "accept: application/json"
+curl -X POST "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: application/json" -H "Content-Type: application/json" -d "\"unichain@192.168.1.10:2789\""
 
 delete /actor
 curl -X DELETE "http://127.0.0.1:5000/v1.1/actor" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"address\": \"1FX5MDw65wLx2kzxJNEyKuRK9QYueUtw6WKqHL\" }"
 
 post /offchain/subscription
-curl -X POST "http://127.0.0.1:5000/v1.1/offchain/subscription" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"url\": \"http://192.168.1.10:5000/v1.1/actor\", \"name\": \"ATM \", \"code\":2 }"
+curl -X POST "http://127.0.0.1:5000/v1.1/offchain/subscription" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"url\": \"http://192.168.1.10:5000/v1.1/actor\", \"name\": \"ATM\", \"code\":2 }"
 
 get /offchain/certificate
 curl -X GET "http://127.0.0.1:5000/v1.1/offchain/certificate" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"file\":\"./res/diploma\", \"code\":\"x1\"}"
