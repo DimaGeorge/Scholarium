@@ -9,24 +9,24 @@ subscription = Blueprint('subscription', __name__)
 
 @subscription.route(settings.version + '/offchain/subscription' , methods = ['POST'])
 def createSubscripton():
-    subscriotionForm = request.get_json()
-
-    if sendSubscription(subscriotionForm) == 'Your subscription failed':
+    settings.initMultichainNode()
+    subscriptionForm = request.get_json()
+    partnerPubKey = sendSubscription(subscriptionForm)
+    if partnerPubKey == 'Your subscription failed':
        return 'Subscription faild'
     else:
-       multisigAddress = createMultisignatureAddress(sendSubscription(subscriotionForm))
+       multisigAddress = createMultisignatureAddress(partnerPubKey)
        if multisigAddress:
            return 'You were accepted'
        else:
            return 'Subscription Failed' 
 
 def createMultisignatureAddress(actorPubKey):
-    return multichainNode.addmultisigaddress(2,[actorPubKey,setting.myPubKey])
+    return settings.multichainNode.addmultisigaddress(2,[actorPubKey,settings.myPubKey])
 
-def sendSubscription(subscriotionForm):
-    subscriotionForm['address'] = settings.myAddress
-    subscriotionForm['pubKey'] = settings.myPubKey
-    
-    output = requests.post(subscriptionForm['url'], json = subscriotionForm).content
-    return Response(output)
+def sendSubscription(subscriptionForm):
+    subscriptionForm['address'] = settings.myAddress
+    subscriptionForm['pubKey'] = settings.myPubKey
+    output = requests.post(subscriptionForm['url'], json = subscriptionForm).content
+    return output
 
