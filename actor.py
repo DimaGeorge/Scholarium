@@ -2,13 +2,14 @@ from flask import Flask
 import json
 import requests
 from Savoir import Savoir
-from function import function
 from flask_cors import CORS
 from flask import Flask, render_template, request, url_for, jsonify
 from flask import Blueprint, request
 import settings
+from werkzeug.wrappers import Request, Response
 
-acceptActor = Blueprint('acceptActor', __name__)
+
+actor = Blueprint('actor', __name__)
 
 def giveActorPermissions(actorAddress, myAddres, multisigAddress, permissionsList):
     actorPermissions = multichainNode.grantfrom(myAddres,actorAddress,permissionsList)
@@ -50,16 +51,20 @@ def createLicence(certifyingEntityName):
     return certifyingEntityName + 'cert'
 
 
-@deleteActor.route(settings.version + '/deleteActor', methods = ['DELETE'])
-def delActor(actorAddress):
-    settings.multichainNode.revokefrom(myAddress,actorAddress,'send,receive,mine,create,admin,activate,issue')
+@actor.route(settings.version + '/actor', methods = ['DELETE'])
+def delActor():
+    params = request.get_json()
+    actorAddress = params['address']
+
+    settings.multichainNode.revokefrom(settings.myAddress,actorAddress,'send,receive,mine,create,admin,activate,issue')
     return 'Address' + actorAddress + 'permissions were deleted' 
 
 
-@acceptActor.route(settings.version +'/acceptActor', methods = ['POST'])
+@actor.route(settings.version +'/actor', methods = ['POST'])
 def accActorData():
     subscriptionForm = request.get_json()
-    if validateActorData() = 'failed':
+
+    if validateActorData() == 'failed':
         return 'Your subscription failed'
     else:    
         return addActor(subscriptionForm,validateActorData)

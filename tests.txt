@@ -16,3 +16,9 @@ curl -X POST "http://127.0.0.1:5000/v1.1/blockchain/connection" -H "accept: appl
 **
 get /offchain/subscription
 curl -X POST "http://127.0.0.1:5000/v1.1/offchain/subscription" -H "accept: application/json"
+
+delete /actor
+curl -X DELETE "http://127.0.0.1:5000/v1.1/actor" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"address\": \"1FX5MDw65wLx2kzxJNEyKuRK9QYueUtw6WKqHL\" }"
+
+post /actor
+curl -X DELETE "http://127.0.0.1:5000/v1.1/actor" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"url\": \"192.168.1.7:5001\", \"name\": \"ATM \", \"address\" :\"\", \"pubKey\":\"\", \"code\":\"2\" }"
