@@ -13,16 +13,17 @@ actor = Blueprint('actor', __name__)
 
 @actor.route(settings.version + '/actor', methods = ['DELETE'])
 def delActor():
+    settings.initMultichainNode()
     parameter = request.get_json()
     actorAddress = parameter['address']
-
     settings.multichainNode.revokefrom(settings.myAddress,actorAddress,'send,receive,mine,create,admin,activate,issue')
-    return 'Address' + actorAddress + 'permissions were deleted' 
+    return 'Address ' + actorAddress + ' permissions were deleted' 
 
 
 @actor.route(settings.version +'/actor', methods = ['POST'])
 def addActor():
     subscriptionForm = request.get_json()
+    settings.initMultichainNode()
     permissionsList = validateActorData(subscriptionForm)
 
     if permissionsList:
@@ -30,9 +31,12 @@ def addActor():
             multisigAddress = settings.multichainNode.addmultisigaddress(2,[settings.myPubKey,subscriptionForm['pubKey']])
             settings.multichainNode.importaddress(multisigAddress,'false')
             settings.multichainNode.grantfrom(settings.myAddress,multisigAddress,'send,receive')
-        settings.multichainNode.grantfrom(settings.myAddress,actorAddress,permissionsList)
-        print subscriptionForm['name'] + 'was accepted'
-        return jsonify(settings.myPubKey)
+        
+
+        settings.multichainNode.grantfrom(settings.myAddress,subscriptionForm['address'],permissionsList)
+        print subscriptionForm['name'] + ' was accepted'
+        print settings.myPubKey
+        return Response(settings.myPubKey)
     else:
         return ''
 
@@ -52,7 +56,7 @@ def validateActorData(subscriptionForm):
             
 def createLicence(certifyingEntityName):
     licence = certifyingEntityName + 'cert' 
-    settings.multichainNode.issue(settings.myAddress,'{"name":' + licence + ',"open":true}')
+    settings.multichainNode.issue(settings.myAddress, {'name':licence, 'open':True}, 0)
     return licence
 
 

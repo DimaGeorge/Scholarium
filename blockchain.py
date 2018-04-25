@@ -16,7 +16,7 @@ def createChain():
         + parameter['params'] 
         + settings.defaultBlockchainParamsList
         )
-    output = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]
+    output = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
     return Response(output)
 
 @blockchain.route(settings.version + '/blockchain' , methods = ['DELETE'])
