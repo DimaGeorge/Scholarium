@@ -2,7 +2,7 @@ from flask import Flask
 import json
 import requests
 from Savoir import Savoir
-from flask_cors import CORS
+
 from flask import Flask, render_template, request, url_for, jsonify
 from flask import Blueprint, request
 import settings
@@ -11,29 +11,32 @@ from werkzeug.wrappers import Request, Response
 
 actor = Blueprint('actor', __name__)
 
-def giveActorPermissions(actorAddress, myAddres, multisigAddress, permissionsList):
-    actorPermissions = multichainNode.grantfrom(myAddres,actorAddress,permissionsList)
-    multisigPermissions = multichainNode.grantfrom(myAddres,multisigAddress,permissionsList)
-    
-    if actorPermissions['error code'] or multisigPermissions['error code']:
-        return False
-    else:    
-        return True    
+def giveActorPermissions(actorAddress, multisigAddress, permissionsList):
+    settings.initMultichainNode()
+    actorPermissions = settings.multichainNode.grantfrom(settings.myAddress,actorAddress,permissionsList)
+    multisigPermissions = settings.multichainNode.grantfrom(settings.myAddress,multisigAddress,"send,receive")
+    return True    
             
 
 def createMultisignatureAddress(claimerPubKey):
-    return multichainNode.addmultisigaddress(2,[setting.myPubKey,claimerPubKey])
+    settings.initMultichainNode()
+    return  settings.multichainNode.addmultisigaddress(2,[settings.myPubKey,claimerPubKey])
+
     
 
 def addActor(subscriptionForm,permissionsList):
-    multisigAddress = createMultisignatureAddress(subscriptionForm['pubkey'])
-
-    if giveActorPermissions(subscriptionForm['address'],settings.myAddress,multisigAddress,permissionsList):
+    multisigAddress = createMultisignatureAddress(subscriptionForm['pubKey'])
+    if giveActorPermissions(subscriptionForm['address'],multisigAddress,permissionsList):
         print subscriptionForm['name'] + 'was accepted'
         return jsonify(settings.myPubKey)
     else:
         return 'Your subscription faild'
-     
+
+def createLicence(certifyingEntityName):
+    #issue
+    return certifyingEntityName + 'cert'
+
+
 def validateActorData(subscriptionForm):
     if subscriptionForm['code'] == 1: # for high autorities
         return 'admin'
@@ -47,8 +50,7 @@ def validateActorData(subscriptionForm):
                 return 'failed'    
 
 
-def createLicence(certifyingEntityName):
-    return certifyingEntityName + 'cert'
+
 
 
 @actor.route(settings.version + '/actor', methods = ['DELETE'])
@@ -63,9 +65,11 @@ def delActor():
 @actor.route(settings.version +'/actor', methods = ['POST'])
 def accActorData():
     subscriptionForm = request.get_json()
-
-    if validateActorData() == 'failed':
+    print subscriptionForm
+    if validateActorData(subscriptionForm) == 'failed':
         return 'Your subscription failed'
     else:    
-        return addActor(subscriptionForm,validateActorData)
+        a = addActor(subscriptionForm,validateActorData(subscriptionForm))
+        print a
+        return a
 
