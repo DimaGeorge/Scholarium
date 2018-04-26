@@ -4,8 +4,18 @@ import settings
 import subprocess
 from Savoir import Savoir
 import time
+import json
 
 connection = Blueprint('connection', __name__)
+
+@connection.route(settings.version + '/blockchain/connection' , methods = ['OPTIONS'])
+def uselessFunction():
+    rsp = Response("")
+    rsp.headers['Access-Control-Allow-Origin']='*'
+    rsp.headers['Access-Control-Max-Age'] = 3628800
+    rsp.headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT'
+    rsp.headers['Access-Control-Allow-Headers'] = 'content-type' 
+    return rsp
 
 @connection.route(settings.version + '/blockchain/connection', methods = ['POST'])
 def connectToExistingChain():
@@ -17,7 +27,9 @@ def connectToExistingChain():
 @connection.route(settings.version + '/blockchain/connection' , methods = ['GET'])
 def getNodeAddress():
     settings.initMultichainNode()
-    return Response(settings.multichainNode.getinfo()['nodeaddress'] + "\n")
+    rsp = Response(settings.multichainNode.getinfo()['nodeaddress'])
+    rsp.headers['Access-Control-Allow-Origin']='*'
+    return rsp
 
 @connection.route(settings.version + '/blockchain/connection' , methods = ['PUT'])
 def startChain():

@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+    function postBlockchain() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/blockchain";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 /*&& xhr.status === 200*/) {
+                var json = JSON.parse(xhr.responseText);
+                //console.log(json.email + ", " + json.password);
+                
+            }
+            document.getElementById('postBlockchain').innerHTML = xhr.responseText;
+        };
+        var data = JSON.stringify({ "chainName": "unichain", "params": []});
+        xhr.send(data);
+    }
+    
+    function deleteBlockchain() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/blockchain";
+        xhr.open("DELETE", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                document.getElementById('deleteBlockchain').innerHTML = xhr.responseText;
+                
+            }
+            alert(this.readyState);
+            alert(this.responseText);
+        };
+        //var data = JSON.stringify({"email": "hey@mail.com", "password": "101010"});
+        xhr.send(/*data*/);
+    }
+
+    function putBlockchainConnection() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/blockchain/connection";
+        xhr.open("PUT", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                document.getElementById('deleteBlockchain').innerHTML = xhr.responseText;
+                
+            }
+            alert(this.readyState);
+            alert(this.responseText);
+        };
+        //var data = JSON.stringify({"email": "hey@mail.com", "password": "101010"});
+        xhr.send(/*data*/);
+    }
+
+    function getBlockchainConnection() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/blockchain/connection";
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4)  { 
+                document.getElementById('getBlockchainConnection').innerHTML = xhr.responseText;
+            }
+        };
+        //var data = JSON.stringify({"email": "hey@mail.com", "password": "101010"});
+        xhr.send(/*data*/);
+    }
+
+    </script>
+
+</head>
+
+<body>
+
+<h1>The high authority</h1>
+
+<button type="button" onclick="postBlockchain()"> POST BLOCKCHAIN</button>
+<p id="postBlockchain"></p>
+
+<button type="button" onclick="deleteBlockchain()"> DELETE BLOCKCHAIN</button>
+<p id="deleteBlockchain"></p>
+
+<button type="button" onclick="putBlockchainConnection()"> PUT BLOCKCHAIN CONNECTION</button>
+<p id="putBlockchainConnection"></p>
+
+<button type="button" onclick="getBlockchainConnection()"> GET BLOCKCHAIN CONNECTION</button>
+<p id="getBlockchainConnection"></p>
+
+</body>
+</html> 

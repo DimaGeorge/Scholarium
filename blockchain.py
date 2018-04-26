@@ -5,6 +5,15 @@ import subprocess
 
 blockchain = Blueprint('blockchain', __name__)
 
+@blockchain.route(settings.version + '/blockchain' , methods = ['OPTIONS'])
+def uselessFunction():
+    rsp = Response("")
+    rsp.headers['Access-Control-Allow-Origin']='*'
+    rsp.headers['Access-Control-Max-Age'] = 3628800
+    rsp.headers['Access-Control-Allow-Methods'] = 'POST, DELETE'
+    rsp.headers['Access-Control-Allow-Headers'] = 'content-type' 
+    return rsp
+
 @blockchain.route(settings.version + '/blockchain' , methods = ['POST'])
 def createChain():
     parameter = request.get_json()
