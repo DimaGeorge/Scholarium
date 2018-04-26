@@ -24,15 +24,16 @@ def delActor():
 def addActor():
     subscriptionForm = request.get_json()
     settings.initMultichainNode()
+
+    #create the permision list based on actor's role
     permissionsList = validateActorData(subscriptionForm)
-
-    if permissionsList:
-        if permissionsList != 1:
-            multisigAddress = settings.multichainNode.addmultisigaddress(2,[settings.myPubKey,subscriptionForm['pubKey']])
-            settings.multichainNode.importaddress(multisigAddress,'false')
-            settings.multichainNode.grantfrom(settings.myAddress,multisigAddress,'send,receive')
+    
+    #grant actor permissions 
+    if permissionsList: 
+        multisigAddress = settings.multichainNode.addmultisigaddress(2,[settings.myPubKey,subscriptionForm['pubKey']])
+        settings.multichainNode.importaddress(multisigAddress,'false')
+        settings.multichainNode.grantfrom(settings.myAddress,multisigAddress,'send,receive')
         
-
         settings.multichainNode.grantfrom(settings.myAddress,subscriptionForm['address'],permissionsList)
         print subscriptionForm['name'] + ' was accepted'
         print settings.myPubKey
@@ -55,6 +56,7 @@ def validateActorData(subscriptionForm):
 
             
 def createLicence(certifyingEntityName):
+    #create the unique asset for Certifying Entities
     licence = certifyingEntityName + 'cert' 
     settings.multichainNode.issue(settings.myAddress, {'name':licence, 'open':True}, 0)
     return licence
