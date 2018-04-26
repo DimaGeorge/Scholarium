@@ -17,6 +17,7 @@ global multichainNode
 global nodePid
 global diplomaName
 global actors
+global identitySetted
 
 rpcuser = 'default'
 rpcpasswd = 'default'
@@ -27,8 +28,9 @@ nodeAddress = 'unichain'
 version = '/v1.1'
 myAddress = 'none'
 myPubKey = 'none'
-diplomaName = 'defaultDiploma'
+diplomaName = 'ud'
 actors = {}
+identitySetted = True
 
 defaultBlockchainParamsList = [
     '-anyone-can-connect=true',
@@ -83,12 +85,29 @@ def initMultichainNode():
     multichainNode = Savoir(rpcuser, rpcpasswd, rpchost, rpcport, chainName)
     print "Multichain node initiated!"
 
-    addressesList = multichainNode.listaddresses()
-    for item in addressesList:
-        if item['ismine'] == True:
-            myAddress = item['address']
+    if(identitySetted):
+        with open('./res/identity', 'r') as fin:
+            identity = json.load(fin)
+            myAddress = identity['address']
+            myPubKey = identity['pubkey']
+    else:
+        addressesList = multichainNode.listaddresses()
+        myAddress = addressesList[0]['address'] # not got to take the last address, when you import multisg addresses
+        myPubKey = multichainNode.validateaddress(myAddress)['pubkey']
+        permissions = multichainNode.listpermissions('*', myAddress)
+        rank = 4
+        for item in permissions:
+            if item['type'] == 'admin':
+                rank = 1
+                break
+            elif item['type'] == 'activate':
+                rank = 2
+            elif (item['type'] == 'send') and (rank > 2):
+                rank = 3
 
-    myPubKey = multichainNode.validateaddress(myAddress)['pubkey']
+        identity = {'address': myAddress, 'pubkey': myPubKey, 'rank':rank}
+        with open('./res/identity', 'w') as fout:
+            json.dump(identity, fout)
 
     with open('./res/actors', 'r') as fin:
         actors = json.load(fin)

@@ -16,6 +16,7 @@ def connectToExistingChain():
 
 @connection.route(settings.version + '/blockchain/connection' , methods = ['GET'])
 def getNodeAddress():
+    settings.initMultichainNode()
     return Response(settings.multichainNode.getinfo()['nodeaddress'] + "\n")
 
 @connection.route(settings.version + '/blockchain/connection' , methods = ['PUT'])
@@ -24,11 +25,9 @@ def startChain():
         command = [settings.pathToMultichain + "/multichaind", "-daemon", settings.nodeAddress] 
         proc = subprocess.Popen(command)
         settings.nodePid = proc.pid
-        time.sleep(2)
         if settings.nodePid == 0:
             return Response("Something went wrong when trying to start the chain!")
         else:
-            settings.initMultichainNode()
             return Response("Node running.\n")
     else:
         return Response(settings.killNode())
