@@ -4,6 +4,7 @@ from connection import connection
 from subscription import subscription
 from actor import actor
 from certificate import certificate
+from request import request
 import settings
 
 
@@ -14,6 +15,7 @@ app.register_blueprint(connection)
 app.register_blueprint(subscription)
 app.register_blueprint(actor)
 app.register_blueprint(certificate)
+app.register_blueprint(request)
 
 
 if __name__ == '__main__':

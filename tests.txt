@@ -22,3 +22,8 @@ curl -X POST "http://127.0.0.1:5000/v1.1/offchain/subscription" -H "accept: appl
 get /offchain/certificate
 curl -X GET "http://127.0.0.1:5000/v1.1/offchain/certificate" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"file\":\"./res/diploma\", \"code\":\"x1\"}"
 
+get /offchain/request
+curl -X GET "http://127.0.0.1:5000/v1.1/offchain/subscription" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"url\": \"http://192.168.1.12:5000/v1.1/offchain/certificate\"}"
+
+put /offchain/request
+curl -X PUT "http://127.0.0.1:5000/v1.1/offchain/subscription" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"url\": \"http://192.168.1.12:5000/v1.1/offchain/????\", \"transaction"\ : \"hex????\" }"
