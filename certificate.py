@@ -30,13 +30,10 @@ def integrateCertificate():
 
     # hashing the certificate
     sha256 = hashlib.sha256()
-
     fin = open(params['file'], 'rb')
     myData = fin.read()
     fin.close()
-
     sha256.update(myData)
-    
     myHash = sha256.hexdigest()
     
     multisigAddress = settings.actors[params['code']]['multisig']
@@ -46,7 +43,6 @@ def integrateCertificate():
 
     ## semnez?
     hexBloc = settings.multichainNode.signrawtransaction(hexBloc)['hex']
-
     retval = {'cert': myData, 'transaction': hexBloc}
 
     return Response(json.dumps(retval))
