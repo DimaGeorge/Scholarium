@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+    
+    function deleteBlockchain() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/blockchain";
+        xhr.open("DELETE", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                document.getElementById('deleteBlockchain').innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send(null);
+    }
+
+    function putBlockchainConnection() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/blockchain/connection";
+        xhr.open("PUT", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                document.getElementById('putBlockchainConnection').innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send(null);
+    }
+
+    function getBlockchainConnection() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/blockchain/connection";
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4)  { 
+                document.getElementById('getBlockchainConnection').innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send(null);
+    }
+
+    function postBlockchainConnection() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/blockchain/connection";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                document.getElementById('postBlockchainConnection').innerHTML = xhr.responseText;
+            }
+        };
+        var connectionName = document.getElementById('connectionName').value
+        var data = JSON.stringify(connectionName);
+        xhr.send(data);
+    }
+
+    function postOffchainSubscription() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/offchain/subscription";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                document.getElementById('postOffchainSubscription').innerHTML = xhr.responseText;
+            }
+        };
+        var url = document.getElementById('url').value
+        var name = document.getElementById('name').value
+        var code = document.getElementById('code').value
+        var data = JSON.stringify({"url" : url, "name" : name, "code" : Number(code)});
+        xhr.send(data);
+    }
+    </script>
+
+</head>
+
+<body>
+
+<h1>The certifying entity</h1>
+
+<button type="button" onclick="deleteBlockchain()"> DELETE BLOCKCHAIN</button>
+<p id="deleteBlockchain"></p>
+
+<button type="button" onclick="postBlockchainConnection()"> POST BLOCKCHAIN CONNECTION</button>
+Connection name: <input  type="text" maxlength="512" id="connectionName" value="unichain@192.168.1.12:7315"/>
+<p id="postBlockchainConnection"></p>
+
+<button type="button" onclick="putBlockchainConnection()"> PUT BLOCKCHAIN CONNECTION</button>
+<p id="putBlockchainConnection"></p>
+
+<button type="button" onclick="getBlockchainConnection()"> GET BLOCKCHAIN CONNECTION</button>
+<p id="getBlockchainConnection"></p>
+
+<button type="button" onclick="postOffchainSubscription()"> POST OFFCHAIN SUBSCRIPTION</button>
+Url: <input  type="text" maxlength="512" id="url" value="http://192.168.1.12:5000/v1.1/actor"/>
+Name: <input  type="text" maxlength="512" id="name" value="Jita"/>
+Code: <input  type="text" maxlength="512" id="code" value="3"/>
+<p id="postOffchainSubscription"></p>
+
+
+</body>
+</html> 
