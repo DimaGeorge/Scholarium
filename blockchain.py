@@ -26,15 +26,15 @@ def createChain():
         + settings.defaultBlockchainParamsList
         )
     output = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
-    return Response(output)
+    return settings.corsResponse(output)
 
 @blockchain.route(settings.version + '/blockchain' , methods = ['DELETE'])
 def destroyChain():
     if settings.nodePid == 0:
         command = ["rm", "-r" , settings.pathToHiddenMultichain + "/" + settings.chainName] 
         subprocess.call(command)
-        return Response("Chain deleted.\n")
+        return settings.corsResponse(settings.chainName + " deleted.")
     else:
-        return Response("Stop the connection before deleting the chain!\n")
+        return settings.corsResponse("Stop the connection before deleting the chain!")
     
     

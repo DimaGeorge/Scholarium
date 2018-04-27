@@ -1,4 +1,5 @@
 from Savoir import Savoir
+from werkzeug.wrappers import Response
 from os.path  import expanduser
 import signal
 import subprocess
@@ -30,7 +31,7 @@ myAddress = 'none'
 myPubKey = 'none'
 diplomaName = 'ud'
 actors = {}
-identitySetted = True
+identitySetted = False
 
 defaultBlockchainParamsList = [
     '-anyone-can-connect=true',
@@ -59,7 +60,7 @@ def killNode():
         command = ["fuser", rpcport + "/tcp", "-k"]
         subprocess.call(command)
         nodePid = 0
-        return "Node stopped.\n"
+        return "Node stopped."
 
 signal.signal(signal.SIGTERM, exitGracefully)
 signal.signal(signal.SIGINT, exitGracefully)
@@ -111,6 +112,11 @@ def initMultichainNode():
 
     with open('./res/actors', 'r') as fin:
         actors = json.load(fin)
+
+def corsResponse(param):
+    param = Response(param)
+    param.headers['Access-Control-Allow-Origin']='*'
+    return param
 
 def updateChainName(param):
     global chainName

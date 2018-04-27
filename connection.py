@@ -22,14 +22,12 @@ def connectToExistingChain():
     parameter = request.get_json()
     settings.nodeAddress = parameter
     settings.chainName = parameter.split("@")[0]
-    return Response(parameter + "\n")
+    return settings.corsResponse(parameter)
 
 @connection.route(settings.version + '/blockchain/connection' , methods = ['GET'])
 def getNodeAddress():
     settings.initMultichainNode()
-    rsp = Response(settings.multichainNode.getinfo()['nodeaddress'])
-    rsp.headers['Access-Control-Allow-Origin']='*'
-    return rsp
+    return settings.corsResponse(settings.multichainNode.getinfo()['nodeaddress'])
 
 @connection.route(settings.version + '/blockchain/connection' , methods = ['PUT'])
 def startChain():
@@ -38,9 +36,9 @@ def startChain():
         proc = subprocess.Popen(command)
         settings.nodePid = proc.pid
         if settings.nodePid == 0:
-            return Response("Something went wrong when trying to start the chain!")
+            return settings.corsResponse("Something went wrong when trying to start the chain!")
         else:
-            return Response("Node running.\n")
+            return settings.corsResponse("Node running.")
     else:
-        return Response(settings.killNode())
+        return settings.corsResponse(settings.killNode())
 
