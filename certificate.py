@@ -10,40 +10,46 @@ certificate = Blueprint('certificate', __name__)
 @certificate.route(settings.version + '/offchain/certificate', methods = ['GET'])
 def integrateCertificate():
     settings.initMultichainNode()
-    with open("./res/identity", 'r') as fin:
-        identiy = json.load(fin)
-        if identiy['rank'] == 1:
-            print "You are a High Authority. You can issue certificates, but you shouldn't"
-        elif identiy['rank'] == 2:
-            print "You are a Certifying Entity. Happy certifying!"
-        else:
-            print "You don't have permissions to create certificates"
-            return Response("")
-
+    # to verify if I can do it
     params = request.get_json()
-
     # creating the certificate
-    if 'file' in params.keys():
-        print params['file']
-    else:
-        return Response("The feature of Scholarium certificates was not yet implemented")
+    key = params['pass']
+    if key not in settings.actors.keys():
+        return "Wrong pass"
+
+    fin = open('res/' + settings.actors[key]['file'], 'rb')
+    myData = fin.read()
+    fin.close()
+
+    if 'txid' in settings.actors[key].keys():
+        retval = {'cert': myData, 'txid': settings.actors[params['pass']]['txid']}
+        return Response(json.dumps(retval))
 
     # hashing the certificate
     sha256 = hashlib.sha256()
-    fin = open(params['file'], 'rb')
-    myData = fin.read()
-    fin.close()
     sha256.update(myData)
     myHash = sha256.hexdigest()
     
-    multisigAddress = settings.actors[params['code']]['multisig']
+    multisigAddress = settings.actors[params['pass']]['multisig']
     settings.multichainNode.issuemorefrom(settings.myAddress, multisigAddress, settings.diplomaName, 1)
     recipient = {settings.myAddress : {settings.diplomaName : 1}}
     hexBloc = settings.multichainNode.createrawsendfrom(multisigAddress, recipient, [myHash])
 
-    ## semnez?
-    hexBloc = settings.multichainNode.signrawtransaction(hexBloc)['hex']
     retval = {'cert': myData, 'transaction': hexBloc}
-
     return Response(json.dumps(retval))
 
+@certificate.route(settings.version + '/offchain/certificate', methods = ['POST'])
+def publishTransaction():
+    settings.initMultichainNode()
+    params = request.get_json()
+    hexBloc = settings.multichainNode.signrawtransaction(params['hex'])
+    if hexBloc['complete']:
+        txid = settings.multichainNode.sendrawtransaction(hexBloc['hex'])
+        settings.actors[params['pass']]['txid'] = txid
+        settings.saveActors()
+        print settings.actors
+        return Response(txid)
+    else:
+        print "Something went wrong"
+        return Response("error")
+    

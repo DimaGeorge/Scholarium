@@ -29,7 +29,7 @@ nodeAddress = 'unichain'
 version = '/v1.1'
 myAddress = 'none'
 myPubKey = 'none'
-diplomaName = 'ud'
+diplomaName = 'ATMcert'
 actors = {}
 identitySetted = False
 
@@ -124,3 +124,6 @@ def updateChainName(param):
     chainName = param
     nodeAddress = param
             
+def saveActors():
+    with open('./res/actors', 'w') as fout:
+        json.dump(actors, fout)

@@ -22,38 +22,50 @@ def delActor():
 
 @actor.route(settings.version +'/actor', methods = ['POST'])
 def addActor():
-    subscriptionForm = request.get_json()
     settings.initMultichainNode()
-
-    #create the permision list based on actor's role
+    subscriptionForm = request.get_json()
     
-    permissionsList = validateActorData(subscriptionForm)
+    #create the permision list based on actor's role
+    print subscriptionForm
+    print "-----------------------------------"
+    key = subscriptionForm['pass']
+    if key not in settings.actors.keys():
+        return ''
+
+    permissionsList = validateActorData(settings.actors[key]['rank'])
   
     #grant actor permissions 
     if permissionsList: 
+        #creating multisig
         multisigAddress = settings.multichainNode.addmultisigaddress(2,[settings.myPubKey,subscriptionForm['pubKey']])
         settings.multichainNode.importaddress(multisigAddress,'false')
         settings.multichainNode.grantfrom(settings.myAddress,multisigAddress,'send,receive')
-        if subscriptionForm['code'] == 2:
+        
+        #granting permissions
+        if settings.actors[key]['rank'] == 2:
             settings.multichainNode.grantfrom(settings.myAddress,subscriptionForm['address'],createLicence(subscriptionForm['name']) + '.issue')
         settings.multichainNode.grantfrom(settings.myAddress,subscriptionForm['address'],permissionsList)
+        
+        #saving actor
+        settings.actors[key]['multisig'] = multisigAddress
+        settings.actors[key]['identity'] = subscriptionForm['name']
+        settings.saveActors()
+
         print subscriptionForm['name'] + ' was accepted'
         return Response(settings.myPubKey)
     else:
         return ''
 
 
-def validateActorData(subscriptionForm):
-    if subscriptionForm['code'] == 1: # for high autorities
+def validateActorData(rank):
+    if rank == 1: # for high autorities
         return 'send,receive,mine,create,admin,activate,issue'
+    elif rank == 2: # for certifying entity
+        return 'send,receive,activate'
+    elif rank == 3: # for claimer
+        return 'send,receive' 
     else:
-        if subscriptionForm['code'] == 2: # for certifying entity
-            return 'send,receive,activate'
-        else:
-            if subscriptionForm['code'] == 3: # for claimer
-                return 'send,receive' 
-            else:
-                return''    
+        return''    
 
             
 def createLicence(certifyingEntityName):
