@@ -68,9 +68,9 @@
                 document.getElementById('postOffchainSubscription').innerHTML = xhr.responseText;
             }
         };
-        var url = document.getElementById('url').value
-        var name = document.getElementById('name').value
-        var code = document.getElementById('code').value
+        var url = document.getElementById('url').value;
+        var name = document.getElementById('name').value;
+        var code = document.getElementById('code').value;
         var data = JSON.stringify({"url" : url, "name" : name, "code" : Number(code)});
         xhr.send(data);
     }
@@ -80,7 +80,7 @@
 
 <body>
 
-<h1>The certifying entity</h1>
+<h1>The claimer</h1>
 
 <button type="button" onclick="deleteBlockchain()"> DELETE BLOCKCHAIN</button>
 <p id="deleteBlockchain"></p>

@@ -68,10 +68,10 @@
                 document.getElementById('postOffchainSubscription').innerHTML = xhr.responseText;
             }
         };
-        var url = document.getElementById('url').value
-        var name = document.getElementById('name').value
-        var code = document.getElementById('code').value
-        var data = JSON.stringify({"url" : url, "name" : name, "code" : code});
+        var url = document.getElementById('url').value;
+        var name = document.getElementById('name').value;
+        var code = document.getElementById('code').value;
+        var data = JSON.stringify({"url" : url, "name" : name, "code" : Number(code)});
         xhr.send(data);
     }
     </script>
