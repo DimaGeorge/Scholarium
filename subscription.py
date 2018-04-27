@@ -7,6 +7,15 @@ import json
 
 subscription = Blueprint('subscription', __name__)
 
+@subscription.route(settings.version + '/offchain/subscription' , methods = ['OPTIONS'])
+def uselessFunction():
+    rsp = Response("")
+    rsp.headers['Access-Control-Allow-Origin']='*'
+    rsp.headers['Access-Control-Max-Age'] = 3628800
+    rsp.headers['Access-Control-Allow-Methods'] = 'POST'
+    rsp.headers['Access-Control-Allow-Headers'] = 'content-type' 
+    return rsp
+
 @subscription.route(settings.version + '/offchain/subscription' , methods = ['POST'])
 def createSubscripton():
     settings.initMultichainNode()
@@ -20,9 +29,9 @@ def createSubscripton():
     if subscriptionResponse:
         multisigAddress = settings.multichainNode.addmultisigaddress(2,[subscriptionResponse,settings.myPubKey])
         settings.multichainNode.importaddress(multisigAddress,'false')
-        return 'You were accepted\n'
+        return settings.corsResponse('You were accepted. Your multisig: ' + multisigAddress)
     else:
-        return 'Subscription Failed\n' 
+        return settings.corsResponse('Subscription Failed')
 
 
 
