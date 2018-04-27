@@ -6,10 +6,10 @@ import hashlib
 import json
 
 
-request = Blueprint('request',__name__)
+claim = Blueprint('claim',__name__)
 
 
-@request.route(settings.version +'/offchain/request', methods=['GET'])
+@claim.route(settings.version +'/offchain/certificate/claim', methods=['GET']) #to be continued
 def requestCertificate():
     requestForm = request.get_json()
 
@@ -31,13 +31,13 @@ def requestCertificate():
         print 'The hashes does not match'   
 
 
-@request.route(settings.version + '/offchain/request', methods=['POST'])
+@claim.route(settings.version + '/offchain/cetificate/claim', methods=['PUT'])  #to be continued
 def publishCertificate():
     publishForm = request.get_json()
     
     #signed transaction
     signedTransaction = settings.multichainNode.signrawtransaction(publishForm['transaction'])['hex']
     
-    publishResponse = requests.get(publishForm['url'], json = publishForm).content
+    publishResponse = requests.put(publishForm['url'], json = publishForm).content
 
     return publishResponse

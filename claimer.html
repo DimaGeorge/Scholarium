@@ -74,6 +74,37 @@
         var data = JSON.stringify({"url" : url, "name" : name, "code" : Number(code)});
         xhr.send(data);
     }
+
+    function getOffchainCertificateClaim() {    //to be continued
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/offchain/certificate/claim";
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                document.getElementById('getOffchainCertificateClaim').innerHTML = xhr.responseText;
+            }
+        };
+        var url = document.getElementById('url').value;
+        var data = JSON.stringify({"url" : url});
+        xhr.send(data);
+    }
+
+    function putOffchainCertificateClaim() { //to be continued
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:5000/v1.1/offchain/certificate/claim";
+        xhr.open("PUT", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                document.getElementById('putOffchainCertificateClaim').innerHTML = xhr.responseText;
+            }
+        };
+        var url = document.getElementById('url').value;
+        var transaction = document.getElementById('transaction').value
+        var data = JSON.stringify({"url" : url, "transaction" : transaction });
+        xhr.send(data);
+    }
     </script>
 
 </head>
@@ -101,6 +132,17 @@ Name: <input  type="text" maxlength="512" id="name" value="Jita"/>
 Code: <input  type="text" maxlength="512" id="code" value="3"/>
 <p id="postOffchainSubscription"></p>
 
+<!--to be continued-->
+<button type="button" onclick="getOffchainCertificateClaim()"> GET OFFCHAIN CERIFICATE CLAIM</button>    
+Url: <input  type="text" maxlength="512" id="url" value="http://192.168.1.12:5000/v1.1/offchain/certificate"/>
+<p id="getOffchainCertificateClaim"></p>
+
+
+<!--to be continued-->
+<button type="button" onclick="putOffchainCertificateClaim()"> PUT OFFCHAIN CERIFICATE CLAIM</button>
+Url: <input  type="text" maxlength="512" id="url" value="http://192.168.1.12:5000/v1.1/offchain/certificate"/>
+Transaction hex: <input  type="text" maxlength="512" id="name" value="?????"/> <!--tranzactia semanta-->
+<p id="putOffchainCertificateClaim"></p>
 
 </body>
 </html> 
