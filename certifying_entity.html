@@ -57,7 +57,7 @@
         var data = JSON.stringify(connectionName);
         xhr.send(data);
     }
-
+    
     function postOffchainSubscription() {
         var xhr = new XMLHttpRequest();
         var url = "http://localhost:5000/v1.1/offchain/subscription";
@@ -68,12 +68,13 @@
                 document.getElementById('postOffchainSubscription').innerHTML = xhr.responseText;
             }
         };
-        var url = document.getElementById('url').value;
+        var ip = document.getElementById('ip').value;
         var name = document.getElementById('name').value;
-        var code = document.getElementById('code').value;
-        var data = JSON.stringify({"url" : url, "name" : name, "code" : Number(code)});
+        var pass = document.getElementById('pass').value;
+        var data = JSON.stringify({'ip' : ip, 'name' : name, 'pass':pass});
         xhr.send(data);
     }
+
     </script>
 
 </head>
@@ -95,10 +96,11 @@ Connection name: <input  type="text" maxlength="512" id="connectionName" value="
 <button type="button" onclick="getBlockchainConnection()"> GET BLOCKCHAIN CONNECTION</button>
 <p id="getBlockchainConnection"></p>
 
+Url: <input  type="text" maxlength="512" id="ip" value="192.168.1.12:5000"/><br/>
+Name: <input  type="text" maxlength="512" id="name" value="Jita"/><br/>
+Pass: <input  type="text" maxlength="512" id="pass" value="x1"/><br/>
+
 <button type="button" onclick="postOffchainSubscription()"> POST OFFCHAIN SUBSCRIPTION</button>
-Url: <input  type="text" maxlength="512" id="url" value="http://192.168.1.12:5000/v1.1/actor"/>
-Name: <input  type="text" maxlength="512" id="name" value="ATM"/>
-Code: <input  type="text" maxlength="512" id="code" value="2"/>
 <p id="postOffchainSubscription"></p>
 
 
