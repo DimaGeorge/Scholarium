@@ -48,7 +48,7 @@ def validateActorData(subscriptionForm):
         return 'send,receive,mine,create,admin,activate,issue'
     else:
         if subscriptionForm['code'] == 2: # for certifying entity
-            return 'send,receive,activate,' + createLicence(subscriptionForm['name']) +'.issue'
+            return 'send,receive,activate'
         else:
             if subscriptionForm['code'] == 3: # for claimer
                 return 'send,receive' 
