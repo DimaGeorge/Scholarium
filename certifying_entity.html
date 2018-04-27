@@ -3,20 +3,6 @@
 <html>
 <head>
     <script>
-    function postBlockchain() {
-        var xhr = new XMLHttpRequest();
-        var url = "http://localhost:5000/v1.1/blockchain";
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                document.getElementById('postBlockchain').innerHTML = xhr.responseText;
-            }
-        };
-        var chainName = document.getElementById('chainName').value
-        var data = JSON.stringify({ "chainName": chainName, "params": []});
-        xhr.send(data);
-    }
     
     function deleteBlockchain() {
         var xhr = new XMLHttpRequest();
@@ -78,11 +64,7 @@
 
 <body>
 
-<h1>The high authority</h1>
-
-<button type="button" onclick="postBlockchain()"> POST BLOCKCHAIN</button>
-Chain name: <input  type="text" maxlength="512" id="chainName" value="unichain"/>
-<p id="postBlockchain"></p>
+<h1>The certifying entity</h1>
 
 <button type="button" onclick="deleteBlockchain()"> DELETE BLOCKCHAIN</button>
 <p id="deleteBlockchain"></p>
