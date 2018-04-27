@@ -5,6 +5,7 @@ from subscription import subscription
 from actor import actor
 from certificate import certificate
 from claim import claim
+from revoke import revoke
 import settings
 
 
@@ -16,6 +17,7 @@ app.register_blueprint(subscription)
 app.register_blueprint(actor)
 app.register_blueprint(certificate)
 app.register_blueprint(claim)
+app.register_blueprint(revoke)
 
 
 if __name__ == '__main__':
