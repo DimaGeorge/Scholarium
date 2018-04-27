@@ -26,17 +26,18 @@ def addActor():
     settings.initMultichainNode()
 
     #create the permision list based on actor's role
-    permissionsList = validateActorData(subscriptionForm)
     
+    permissionsList = validateActorData(subscriptionForm)
+  
     #grant actor permissions 
     if permissionsList: 
         multisigAddress = settings.multichainNode.addmultisigaddress(2,[settings.myPubKey,subscriptionForm['pubKey']])
         settings.multichainNode.importaddress(multisigAddress,'false')
         settings.multichainNode.grantfrom(settings.myAddress,multisigAddress,'send,receive')
-        
+        if subscriptionForm['code'] == 2:
+            settings.multichainNode.grantfrom(settings.myAddress,subscriptionForm['address'],createLicence(subscriptionForm['name']) + '.issue')
         settings.multichainNode.grantfrom(settings.myAddress,subscriptionForm['address'],permissionsList)
         print subscriptionForm['name'] + ' was accepted'
-        print settings.myPubKey
         return Response(settings.myPubKey)
     else:
         return ''
@@ -47,7 +48,7 @@ def validateActorData(subscriptionForm):
         return 'send,receive,mine,create,admin,activate,issue'
     else:
         if subscriptionForm['code'] == 2: # for certifying entity
-            return 'send,receive,activate,issue.' + createLicence(subscriptionForm['name']) 
+            return 'send,receive,activate,' + createLicence(subscriptionForm['name']) +'.issue'
         else:
             if subscriptionForm['code'] == 3: # for claimer
                 return 'send,receive' 
@@ -57,7 +58,7 @@ def validateActorData(subscriptionForm):
             
 def createLicence(certifyingEntityName):
     #create the unique asset for Certifying Entities
-    licence = certifyingEntityName + 'cert' 
+    licence = certifyingEntityName + 'cert'
     settings.multichainNode.issue(settings.myAddress, {'name':licence, 'open':True}, 0)
     return licence
 
