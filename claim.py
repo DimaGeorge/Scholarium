@@ -23,24 +23,24 @@ def requestCertificate():
     settings.initMultichainNode()
     requestForm = request.get_json()
     url = 'http://' + requestForm['ip'] + '/v1.1/offchain/certificate'
-    requestResponse = requests.get(url, json = requestForm).content
-    requestResponse = json.loads(requestResponse)
+    requestCertResponse = requests.get(url, json = requestForm).content
+    requestCertResponse = json.loads(requestCertResponse)
     
     #extract the hash of the cetificate from transaction
     if 'txid' in requestResponse.keys():
-        return settings.corsResponse(json.dumps(requestResponse))
+        return settings.corsResponse(json.dumps(requestCertResponse))
 
-    decodedTransaction = settings.multichainNode.decoderawtransaction(requestResponse['transaction'])
-    hashedCertificate =decodedTransaction['vout'][1]['data'][0]
+    decodedTransaction = settings.multichainNode.decoderawtransaction(requestCertResponse['transaction'])
+    hashedCertificate = decodedTransaction['vout'][1]['data'][0]
     
     #validate certificate
-    plainCertificate = requestResponse['cert']
+    plainCertificate = requestCertResponse['cert']
     sha256 = hashlib.sha256()
     sha256.update(plainCertificate)
     myHashedCertificate = sha256.hexdigest()
 
     if myHashedCertificate == hashedCertificate:
-        return settings.corsResponse(json.dumps(requestResponse))
+        return settings.corsResponse(json.dumps(requestCertResponse))
     else: 
         return settings.corsResponse("The certificates do not match")   
 

@@ -6,6 +6,7 @@ from actor import actor
 from certificate import certificate
 from claim import claim
 from revoke import revoke
+from verification import verification
 import settings
 
 
@@ -18,6 +19,7 @@ app.register_blueprint(actor)
 app.register_blueprint(certificate)
 app.register_blueprint(claim)
 app.register_blueprint(revoke)
+app.register_blueprint(verification)
 
 
 if __name__ == '__main__':
