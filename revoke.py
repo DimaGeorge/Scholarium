@@ -9,6 +9,14 @@ import requests
 
 revoke = Blueprint('revoke',__name__)
 
+@revoke.route(settings.version + '/certificate/revoke' , methods = ['OPTIONS'])
+def uselessFunction():
+    rsp = Response("")
+    rsp.headers['Access-Control-Allow-Origin']='*'
+    rsp.headers['Access-Control-Max-Age'] = 3628800
+    rsp.headers['Access-Control-Allow-Methods'] = 'POST, PUT'
+    rsp.headers['Access-Control-Allow-Headers'] = 'content-type' 
+    return rsp
 
 @revoke.route(settings.version+ '/certificate/revoke', methods=['DELETE'])
 def revokeCertificate():
@@ -27,15 +35,15 @@ def revokeCertificate():
         
         revocationResponse = requests.delete(revocationForm['url'],json=revocationForm).content
         
-        return revocationResponse
+        return settings.corsResponse(json.dumps(revocationResponse))
 
     if revocationForm['hex']:
         signedRevocationTransaction = settings.multichainNode.signrawtransaction(revocationForm['hex'])
 
         if signedRevocationTransaction['complete'] == True:
             publish = settings.multichainNode.sendrawtransaction(signedRevocationTransaction['hex'])
-            return 'Certificate deleted'
+            return settings.corsResponse('Certificate succesfuly revoked')
         else:
-            return 'Error'    
+            return settings.corsResponse('Error')    
     
-    return 'Error'
+    return settings.corsResponse('Error')

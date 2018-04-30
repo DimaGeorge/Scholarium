@@ -10,8 +10,16 @@ import requests
 
 verification = Blueprint('verification',__name__)
 
+@verification.route(settings.version + '/verification' , methods = ['OPTIONS'])
+def uselessFunction():
+    rsp = Response("")
+    rsp.headers['Access-Control-Allow-Origin']='*'
+    rsp.headers['Access-Control-Max-Age'] = 3628800
+    rsp.headers['Access-Control-Allow-Methods'] = 'POST, PUT'
+    rsp.headers['Access-Control-Allow-Headers'] = 'content-type' 
+    return rsp
 
-@verification.route(settings.version + '/verification', methods=['GET'])
+@verification.route(settings.version + '/verification', methods=['POST'])
 def verifyCertificate():
     verificationForm = request.get_json()
 
@@ -34,11 +42,10 @@ def verifyCertificate():
             transactionDetails['Owner'] = transactionData['vout'][0]['scriptPubKey']['addresses']
             transactionDetails['Sender'] = transactionData['vout'][2]['scriptPubKey']['addresses'] 
             transactionDetails['HashedCertificate'] = hashedCertificate
-            return jsonify(transactionDetails)
+            return settings.corsResponse(json.dumps(transactionDetails))
         else:
-            return 'The certificates do not match'    
+            return settings.corsResponse('The certiifcates do not match')    
     else:    
-        return 'The certificate was revoked'
-
+        return settings.corsResponse('The certificate was revoked')
 
  

@@ -19,6 +19,7 @@ global nodePid
 global diplomaName
 global actors
 global identitySetted
+global burnAddress
 
 rpcuser = 'default'
 rpcpasswd = 'default'

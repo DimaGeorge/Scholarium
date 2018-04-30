@@ -57,47 +57,29 @@
         var data = JSON.stringify(connectionName);
         xhr.send(data);
     }
-    
-    function postOffchainSubscription() {
+
+      function verifyCertificate() {
         var xhr = new XMLHttpRequest();
-        var url = "http://localhost:5000/v1.1/offchain/subscription";
+        var url = "http://localhost:5000/v1.1/verification";
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
-                document.getElementById('postOffchainSubscription').innerHTML = xhr.responseText;
+                document.getElementById('verifyCertificate').innerHTML = xhr.responseText;
             }
         };
-        var ip = document.getElementById('ip').value;
-        var name = document.getElementById('name').value;
-        var pass = document.getElementById('pass').value;
-        var data = JSON.stringify({'ip' : ip, 'name' : name, 'pass':pass});
+        var cert = document.getElementById('cert').value
+        var txid = document.getElementById('txid').value
+        var data = JSON.stringify({'cert' : cert, 'txid' : txid});
         xhr.send(data);
     }
-
-      function deleteCertificate() {
-        var xhr = new XMLHttpRequest();
-        var url = "http://localhost:5000/v1.1/certificate/revoke";
-        xhr.open("DELETE", url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                document.getElementById('deleteCertificate').innerHTML = xhr.responseText;
-            }
-        };
-        var ip = document.getElementById('ipd').value;
-        var txid = document.getElementById('txid').value;
-        var data = JSON.stringify({'ip' : ip, 'txid' : txid});
-        xhr.send(data);
-    }
-
     </script>
 
 </head>
 
 <body>
 
-<h1>The certifying entity</h1>
+<h1>Verify certificates</h1>
 
 <button type="button" onclick="deleteBlockchain()"> DELETE BLOCKCHAIN</button>
 <p id="deleteBlockchain"></p>
@@ -112,18 +94,11 @@ Connection name: <input  type="text" maxlength="512" id="connectionName" value="
 <button type="button" onclick="getBlockchainConnection()"> GET BLOCKCHAIN CONNECTION</button>
 <p id="getBlockchainConnection"></p>
 
-Url: <input  type="text" maxlength="512" id="ip" value="192.168.1.12:5000"/><br/>
-Name: <input  type="text" maxlength="512" id="name" value="Jita"/><br/>
-Pass: <input  type="text" maxlength="512" id="pass" value="x1"/><br/>
+Certificate: <input  type="text" maxlength="512" id="cert" value="dada"/><br/>
+txid: <input  type="text" maxlength="512" id="txid" value="ac929813d2e34bacc8bc0e16c6f962682c1d017cbde442c771152d26a970b64f"/><br/>
 
-<button type="button" onclick="postOffchainSubscription()"> POST OFFCHAIN SUBSCRIPTION</button>
-<p id="postOffchainSubscription"></p>
-
-Url: <input  type="text" maxlength="512" id="ipd" value="192.168.1.12:5000"/><br/>
-txid: <input  type="text" maxlength="512" id="txid" value="1231231.."/><br/>
-
-<button type="button" onclick="deleteCertificate()"> DELETE CERTIFICATE</button>
-<p id="deleteCertificate"></p>
+<button type="button" onclick="verifyCertificate()"> VERIFY CERTIFICATE</button>
+<p id="verifyCertificate"></p>
 
 
 </body>
