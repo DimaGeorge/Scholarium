@@ -25,6 +25,8 @@ def createSubscripton():
     subscriptionForm['pubKey'] = settings.myPubKey
     url = 'http://' + subscriptionForm['ip'] + '/v1.1/actor'
     subscriptionResponse = requests.post(url, json = subscriptionForm).content
+    subscriptionResponse = json.loads(subscriptionResponse)
+    print subscriptionResponse
     if 'diploma' in subscriptionResponse.keys():
         settings.diplomaName = subscriptionResponse['diploma']
 
