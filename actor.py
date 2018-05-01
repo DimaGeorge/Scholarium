@@ -56,7 +56,8 @@ def addActor():
         settings.saveActors()
 
         print subscriptionForm['name'] + ' was accepted'
-        return Response(rsp)
+        print rsp
+        return Response(json.dumps(rsp))
     else:
         return ''
 
