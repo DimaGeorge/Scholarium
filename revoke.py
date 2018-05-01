@@ -14,7 +14,7 @@ def uselessFunction():
     rsp = Response("")
     rsp.headers['Access-Control-Allow-Origin']='*'
     rsp.headers['Access-Control-Max-Age'] = 3628800
-    rsp.headers['Access-Control-Allow-Methods'] = 'POST, PUT'
+    rsp.headers['Access-Control-Allow-Methods'] = 'DELETE'
     rsp.headers['Access-Control-Allow-Headers'] = 'content-type' 
     return rsp
 
@@ -25,7 +25,7 @@ def revokeCertificate():
     if revocationForm['txid'] != '':  
         revocationTransaction = settings.multichainNode.createrawtransaction(
         [{"txid":revocationForm['txid'],"vout":0}],
-        {settings.burnAddress:{settings.diplomaName:1}},
+        {"1XXXXXXXCuXXXXXXdqXXXXXXV5XXXXXXZFb4eK":{settings.diplomaName:1}},
         [],
         'sign'
         )

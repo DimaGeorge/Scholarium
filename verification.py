@@ -29,7 +29,7 @@ def verifyCertificate():
     plainCertificate = verificationForm['cert']
     sha256 = hashlib.sha256()
     sha256.update(plainCertificate)
-    myHashedCertificate = 'dada'
+    myHashedCertificate = sha256.hexdigest()
 
 
     if transactionOutput:
@@ -44,7 +44,7 @@ def verifyCertificate():
             transactionDetails['HashedCertificate'] = hashedCertificate
             return settings.corsResponse(json.dumps(transactionDetails))
         else:
-            return settings.corsResponse('The certiifcates do not match')    
+            return settings.corsResponse('The certificates do not match')    
     else:    
         return settings.corsResponse('The certificate was revoked')
 
