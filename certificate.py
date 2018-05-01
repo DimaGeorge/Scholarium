@@ -32,7 +32,7 @@ def integrateCertificate():
     
     multisigAddress = settings.actors[params['pass']]['multisig']
     settings.multichainNode.issuemorefrom(settings.myAddress, multisigAddress, settings.diplomaName, 1)
-    recipient = {settings.myAddress : {settings.diplomaName : 1}}
+    recipient = {settings.subscriptionMultisig : {settings.diplomaName : 1}}
     hexBloc = settings.multichainNode.createrawsendfrom(multisigAddress, recipient, [myHash])
 
     retval = {'cert': myData, 'transaction': hexBloc}

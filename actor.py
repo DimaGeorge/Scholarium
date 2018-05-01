@@ -36,6 +36,8 @@ def addActor():
   
     #grant actor permissions 
     if permissionsList: 
+        rsp = {'pubkey' : settings.myPubKey}
+
         #creating multisig
         multisigAddress = settings.multichainNode.addmultisigaddress(2,[settings.myPubKey,subscriptionForm['pubKey']])
         settings.multichainNode.importaddress(multisigAddress,'false')
@@ -43,7 +45,9 @@ def addActor():
         
         #granting permissions
         if settings.actors[key]['rank'] == 2:
-            settings.multichainNode.grantfrom(settings.myAddress,subscriptionForm['address'],createLicence(subscriptionForm['name']) + '.issue')
+            titleName = createLicence(subscriptionForm['name'])
+            settings.multichainNode.grantfrom(settings.myAddress,subscriptionForm['address'], titleName + '.issue')
+            rsp['diploma'] = titleName            
         settings.multichainNode.grantfrom(settings.myAddress,subscriptionForm['address'],permissionsList)
         
         #saving actor
@@ -52,7 +56,7 @@ def addActor():
         settings.saveActors()
 
         print subscriptionForm['name'] + ' was accepted'
-        return Response(settings.myPubKey)
+        return Response(rsp)
     else:
         return ''
 

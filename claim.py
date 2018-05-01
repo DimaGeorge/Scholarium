@@ -27,7 +27,7 @@ def requestCertificate():
     requestCertResponse = json.loads(requestCertResponse)
     
     #extract the hash of the cetificate from transaction
-    if 'txid' in requestResponse.keys():
+    if 'txid' in requestCertResponse.keys():
         return settings.corsResponse(json.dumps(requestCertResponse))
 
     decodedTransaction = settings.multichainNode.decoderawtransaction(requestCertResponse['transaction'])

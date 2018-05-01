@@ -20,6 +20,7 @@ global diplomaName
 global actors
 global identitySetted
 global burnAddress
+global subscriptionMultisig
 
 rpcuser = 'default'
 rpcpasswd = 'default'
@@ -30,10 +31,11 @@ nodeAddress = 'unichain'
 version = '/v1.1'
 myAddress = 'none'
 myPubKey = 'none'
-diplomaName = 'ATMcert'
+diplomaName = 'Vergatacert'
 actors = {}
 identitySetted = False
 burnAddress = ""
+subscriptionMultisig = ""
 
 defaultBlockchainParamsList = [
     '-anyone-can-connect=true',

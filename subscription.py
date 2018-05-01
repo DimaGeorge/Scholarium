@@ -25,15 +25,13 @@ def createSubscripton():
     subscriptionForm['pubKey'] = settings.myPubKey
     url = 'http://' + subscriptionForm['ip'] + '/v1.1/actor'
     subscriptionResponse = requests.post(url, json = subscriptionForm).content
+    if 'diploma' in subscriptionResponse.keys():
+        settings.diplomaName = subscriptionResponse['diploma']
 
-    if subscriptionResponse:
-        multisigAddress = settings.multichainNode.addmultisigaddress(2,[subscriptionResponse,settings.myPubKey])
-        print multisigAddress
-        print "=--------------------"
-        settings.multichainNode.importaddress(multisigAddress,'false')
-        return settings.corsResponse('You were accepted. Your multisig: ' + multisigAddress)
-    else:
-        return settings.corsResponse('Subscription Failed')
+    multisigAddress = settings.multichainNode.addmultisigaddress(2,[subscriptionResponse['pubkey'],settings.myPubKey])
+    settings.multichainNode.importaddress(multisigAddress,'false')
+    settings.subscriptionMultisig = multisigAddress
+    return settings.corsResponse('You were accepted. Your multisig: ' + multisigAddress)
 
 
 
