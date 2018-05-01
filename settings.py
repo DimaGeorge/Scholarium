@@ -33,6 +33,7 @@ myPubKey = 'none'
 diplomaName = 'ATMcert'
 actors = {}
 identitySetted = False
+burnAddress = ""
 
 defaultBlockchainParamsList = [
     '-anyone-can-connect=true',
@@ -87,6 +88,11 @@ def initMultichainNode():
     multichainNode = Savoir(rpcuser, rpcpasswd, rpchost, rpcport, chainName)
     print "Multichain node initiated!"
 
+    burnAddress = multichainNode.getinfo()["burnaddress"]
+    permissions = multichainNode.listpermissions("receive", burnAddress)
+    if permissions == []:
+        permissions = multichainNode.grant(burnAddress, "receive")
+    
     if(identitySetted):
         with open('./res/identity', 'r') as fin:
             identity = json.load(fin)

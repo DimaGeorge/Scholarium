@@ -25,7 +25,7 @@ def revokeCertificate():
     if revocationForm['txid'] != '':  
         revocationTransaction = settings.multichainNode.createrawtransaction(
         [{"txid":revocationForm['txid'],"vout":0}],
-        {"1XXXXXXXCuXXXXXXdqXXXXXXV5XXXXXXZFb4eK":{settings.diplomaName:1}},
+        {settings.burnAddress:{settings.diplomaName:1}},
         [],
         'sign'
         )
